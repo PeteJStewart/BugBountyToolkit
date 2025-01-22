@@ -135,11 +135,11 @@ RUN cd ${HOME}/toolkit && \
     ln -sf ${HOME}/toolkit/massdns/bin/massdns /usr/local/bin/massdns
 
 # wafw00f
-RUN cd ${HOME}/toolkit && \
-    git clone https://github.com/enablesecurity/wafw00f.git && \
-    cd wafw00f && \
-    chmod +x setup.py && \
-    /root/venv/bin/python setup.py install
+# RUN cd ${HOME}/toolkit && \
+#     git clone https://github.com/enablesecurity/wafw00f.git && \
+#     cd wafw00f && \
+#     chmod +x setup.py && \
+#     /root/venv/bin/python setup.py install
 
 # wpscan
 RUN cd ${HOME}/toolkit && \
@@ -163,12 +163,12 @@ RUN cd ${HOME}/toolkit && \
     ln -sf ${HOME}/toolkit/masscan/bin/masscan /usr/local/bin/masscan
 
 # altdns
-RUN cd ${HOME}/toolkit && \
-    git clone https://github.com/infosec-au/altdns.git && \
-    cd altdns && \
-    /root/venv/bin/pip install -r requirements.txt && \
-    chmod +x setup.py && \
-    /root/venv/bin/python setup.py install
+# RUN cd ${HOME}/toolkit && \
+#     git clone https://github.com/infosec-au/altdns.git && \
+#     cd altdns && \
+#     /root/venv/bin/pip install -r requirements.txt && \
+#     chmod +x setup.py && \
+#     /root/venv/bin/python setup.py install
 
 # teh_s3_bucketeers
 RUN cd ${HOME}/toolkit && \
