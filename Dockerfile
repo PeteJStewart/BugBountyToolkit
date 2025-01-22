@@ -143,9 +143,6 @@ RUN cd ${HOME}/toolkit && \
 
 # wpscan
 RUN cd ${HOME}/toolkit && \
-    git clone https://github.com/wpscanteam/wpscan.git && \
-    cd wpscan/ && \
-    gem install bundler && bundle install --without test && \
     gem install wpscan
 
 # commix 
