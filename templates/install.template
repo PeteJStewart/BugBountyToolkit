@@ -12,23 +12,7 @@ setup_directories
 apt-get update
 
 # Install packages
-source scripts/common.sh
-source scripts/essentials.sh
-install
-test || echo "Failed to install essentials"
-
-source scripts/packages/subfinder.sh
-install
-test || echo "Failed to install subfinder"
-
-source scripts/packages/dnsenum.sh
-install
-test || echo "Failed to install dnsenum"
-
-source scripts/packages/cloudflair.sh
-install
-test || echo "Failed to install cloudflair"
-
+{{INSTALL_COMMANDS}}
 
 # SecLists
 read -p "Do you want to download SecLists? y/n " -n 1 -r

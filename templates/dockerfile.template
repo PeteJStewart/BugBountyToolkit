@@ -28,24 +28,7 @@ ENV GOPATH=/root/go
 ENV PATH=/root/venv/bin:${GOPATH}/bin:${GOROOT}/bin:${PATH}
 
 # Install packages
-COPY scripts/common.sh /opt/
-COPY scripts/essentials.sh /opt/
-COPY scripts/packages/subfinder.sh /opt/packages/
-COPY scripts/packages/dnsenum.sh /opt/packages/
-COPY scripts/packages/cloudflair.sh /opt/packages/
-RUN source /opt/common.sh && \
-    source /opt/essentials.sh && \
-    install && \
-    test || echo "Failed to install essentials" && \
-    source /opt/packages/subfinder.sh && \
-    install && \
-    test || echo "Failed to install subfinder" && \
-    source /opt/packages/dnsenum.sh && \
-    install && \
-    test || echo "Failed to install dnsenum" && \
-    source /opt/packages/cloudflair.sh && \
-    install && \
-    test || echo "Failed to install cloudflair"
+{{INSTALL_COMMANDS}}
 
 # Compress wordlist
 RUN cd ${HOME}/wordlists && \

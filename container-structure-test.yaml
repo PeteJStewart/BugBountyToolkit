@@ -1,0 +1,72 @@
+schemaVersion: '2.0.0'
+
+# Test metadata
+metadataTest:
+  env:
+    - key: "HOME"
+      value: "/root"
+    - key: "DEBIAN_FRONTEND" 
+      value: "noninteractive"
+    - key: "GOROOT"
+      value: "/usr/local/go"
+    - key: "GOPATH" 
+      value: "/root/go"
+
+# File existence tests
+fileExistenceTests:
+  - name: "Check toolkit directory"
+    path: "/root/toolkit"
+    shouldExist: true
+    isDirectory: true
+    
+  - name: "Check wordlists directory"
+    path: "/root/wordlists"
+    shouldExist: true
+    isDirectory: true
+
+  - name: "Check Go installation"
+    path: "/usr/local/go"
+    shouldExist: true
+    isDirectory: true
+
+# Command tests to verify tool installations
+commandTests:
+  - name: "Test nmap installation"
+    command: "nmap"
+    args: ["-v"]
+    expectedError: ["Starting Nmap"]
+    
+  - name: "Test subfinder installation"
+    command: "subfinder"
+    args: ["-version"]
+    expectedOutput: ["subfinder"]
+    
+  - name: "Test amass installation"
+    command: "amass"
+    args: ["-version"]
+    expectedOutput: ["v"]
+
+  - name: "Test gobuster installation" 
+    command: "gobuster"
+    args: ["--version"]
+    expectedOutput: ["Gobuster"]
+
+  - name: "Test ffuf installation"
+    command: "ffuf"
+    args: ["-V"]
+    expectedOutput: ["ffuf"]
+
+  - name: "Test Python virtual environment"
+    command: "test"
+    args: ["-d", "/root/venv"]
+    exitCode: 0
+
+  - name: "Test ZSH installation"
+    command: "zsh"
+    args: ["--version"]
+    expectedOutput: ["zsh"]
+
+  - name: "Test Git installation"
+    command: "git"
+    args: ["--version"] 
+    expectedOutput: ["git version"] 
