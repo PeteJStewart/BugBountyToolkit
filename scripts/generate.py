@@ -28,31 +28,18 @@ def generate_dockerfile():
     packages = read_package_scripts()
     install_commands = []
     
-    # Add common.sh which contains helper functions first
-    install_commands = ['COPY scripts/common.sh /opt/']
-    
-    # Add essentials.sh separately
-    install_commands.append('COPY scripts/essentials.sh /opt/')
-    
     # Add package scripts
     for pkg in packages:
         script_name = f"{pkg['name']}.sh"
         install_commands.append(f'COPY scripts/packages/{script_name} /opt/packages/')
     
-    # Source common.sh and run essentials first
-    install_commands.extend([
-        'RUN source /opt/common.sh && \\',
-        '    source /opt/essentials.sh && \\',
-        '    install && \\',
-        '    test || echo "Failed to install essentials" && \\'
-    ])
-    
-    # Now add the installation commands for other packages
+    # Add the installation commands for packages
+    install_commands.append('RUN /bin/bash -c \'\\')
     for pkg in packages:
         install_commands.extend([
             f'    source /opt/packages/{pkg["name"]}.sh && \\',
             f'    install && \\',
-            f'    test || echo "Failed to install {pkg["name"]}"' + (' && \\' if pkg != packages[-1] else '')
+            f'    test || echo "Failed to install {pkg["name"]}"' + (' && \\' if pkg != packages[-1] else '\'')
         ])
     
     return template.replace('{{INSTALL_COMMANDS}}', '\n'.join(install_commands))
@@ -62,7 +49,7 @@ def generate_install_script():
         template = f.read()
     
     packages = read_package_scripts()
-    install_commands = []  # Remove essentials since it's handled separately
+    install_commands = []
     
     for pkg in packages:
         install_commands.extend([

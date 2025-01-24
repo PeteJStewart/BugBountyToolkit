@@ -14,10 +14,10 @@ RUN mkdir ${HOME}/toolkit && \
 # Copy and install essentials first
 COPY scripts/common.sh /opt/
 COPY scripts/essentials.sh /opt/
-RUN source /opt/common.sh && \
+RUN /bin/bash -c 'source /opt/common.sh && \
     source /opt/essentials.sh && \
     install && \
-    test || echo "Failed to install essentials"
+    test || echo "Failed to install essentials"'
 
 # Python virtual environment setup
 RUN python3 -m venv /root/venv && \

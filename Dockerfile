@@ -14,10 +14,10 @@ RUN mkdir ${HOME}/toolkit && \
 # Copy and install essentials first
 COPY scripts/common.sh /opt/
 COPY scripts/essentials.sh /opt/
-RUN source /opt/common.sh && \
+RUN /bin/bash -c 'source /opt/common.sh && \
     source /opt/essentials.sh && \
     install && \
-    test || echo "Failed to install essentials"
+    test || echo "Failed to install essentials"'
 
 # Python virtual environment setup
 RUN python3 -m venv /root/venv && \
@@ -36,15 +36,10 @@ ENV GOPATH=/root/go
 ENV PATH=/root/venv/bin:${GOPATH}/bin:${GOROOT}/bin:${PATH}
 
 # Install packages
-COPY scripts/common.sh /opt/
-COPY scripts/essentials.sh /opt/
 COPY scripts/packages/subfinder.sh /opt/packages/
 COPY scripts/packages/dnsenum.sh /opt/packages/
 COPY scripts/packages/cloudflair.sh /opt/packages/
-RUN source /opt/common.sh && \
-    source /opt/essentials.sh && \
-    install && \
-    test || echo "Failed to install essentials" && \
+RUN /bin/bash -c '\
     source /opt/packages/subfinder.sh && \
     install && \
     test || echo "Failed to install subfinder" && \
@@ -53,7 +48,7 @@ RUN source /opt/common.sh && \
     test || echo "Failed to install dnsenum" && \
     source /opt/packages/cloudflair.sh && \
     install && \
-    test || echo "Failed to install cloudflair"
+    test || echo "Failed to install cloudflair"'
 
 # Compress wordlist
 RUN cd ${HOME}/wordlists && \
