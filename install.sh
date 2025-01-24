@@ -11,12 +11,13 @@ setup_directories
 # Update package lists
 apt-get update
 
-# Install packages
+# Install essentials first
 source scripts/common.sh
 source scripts/essentials.sh
 install
 test || echo "Failed to install essentials"
 
+# Install additional packages
 source scripts/packages/subfinder.sh
 install
 test || echo "Failed to install subfinder"

@@ -11,6 +11,14 @@ WORKDIR /root
 RUN mkdir ${HOME}/toolkit && \
     mkdir ${HOME}/wordlists
 
+# Copy and install essentials first
+COPY scripts/common.sh /opt/
+COPY scripts/essentials.sh /opt/
+RUN source /opt/common.sh && \
+    source /opt/essentials.sh && \
+    install && \
+    test || echo "Failed to install essentials"
+
 # Python virtual environment setup
 RUN python3 -m venv /root/venv && \
     echo 'export PATH=/root/venv/bin:$PATH' >> /root/.bashrc && \

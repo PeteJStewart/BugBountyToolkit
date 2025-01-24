@@ -62,13 +62,7 @@ def generate_install_script():
         template = f.read()
     
     packages = read_package_scripts()
-    install_commands = [
-        'source scripts/common.sh',  # Source common.sh once at the beginning
-        'source scripts/essentials.sh',  # Run essentials first
-        'install',
-        'test || echo "Failed to install essentials"',
-        ''  # Empty line for readability
-    ]
+    install_commands = []  # Remove essentials since it's handled separately
     
     for pkg in packages:
         install_commands.extend([
