@@ -6,7 +6,8 @@ PACKAGE_DEPS=""
 
 install() {
     log "Installing ${PACKAGE_NAME}"
-    install_apt_package \
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         tmux \
         gcc \
@@ -30,6 +31,7 @@ install() {
         net-tools \
         zsh \
         nano
+    rm -rf /var/lib/apt/lists/*
 }
 
 test() {
