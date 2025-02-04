@@ -22,7 +22,7 @@ docker pull hackersploit/bugbountytoolkit
 ## Docker Run Instructions
 ### Run with Bash
 ```
-docker run -it hackersploit/bugbountytoolkit /bin/bash
+docker run -it bugbounty-toolkit /bin/bash
 ```
 ### Run with ZSH
 ```
@@ -33,7 +33,7 @@ docker run -it hackersploit/bugbountytoolkit /usr/bin/zsh
 
 ## Docker Build Instructions
 ```
-docker build . -t hackersploit/bugbountytoolkit
+docker build -t bugbounty-toolkit .
 ```
 
 ## Installation Instructions - Ubuntu/Debian

@@ -9,6 +9,12 @@ def get_package_type(content):
             return line.split('=')[1].strip('"\'')
     return 'unknown'
 
+def get_package_url(content):
+    for line in content.splitlines():
+        if line.startswith('PACKAGE_URL='):
+            return line.split('=')[1].strip('"\'')
+    return 'No repository URL specified'
+
 def read_package_scripts():
     packages = []
     for script in glob.glob('scripts/packages/*.sh'):
@@ -28,19 +34,22 @@ def generate_dockerfile():
     packages = read_package_scripts()
     install_commands = []
     
-    # Add package scripts
+    # Process each package individually
     for pkg in packages:
         script_name = f"{pkg['name']}.sh"
+        package_url = get_package_url(pkg['content'])
+        # Add comment with package name and URL
+        install_commands.append(f'# Package: {pkg["name"]}')
+        install_commands.append(f'# URL: {package_url}')
+        # Add copy command for the package script
         install_commands.append(f'COPY scripts/packages/{script_name} /opt/packages/')
-    
-    # Add the installation commands for packages
-    install_commands.append('RUN /bin/bash -c \'\\')
-    for pkg in packages:
-        install_commands.extend([
-            f'    source /opt/packages/{pkg["name"]}.sh && \\',
-            f'    install && \\',
-            f'    test || echo "Failed to install {pkg["name"]}"' + (' && \\' if pkg != packages[-1] else '\'')
-        ])
+        # Add the installation command for this specific package
+        install_commands.append('RUN /bin/bash -c \'' + \
+            f'source /opt/packages/{pkg["name"]}.sh && ' + \
+            'install && ' + \
+            f'test || echo "Failed to install {pkg["name"]}"\'')
+        # Add empty line for readability
+        install_commands.append('')
     
     return template.replace('{{INSTALL_COMMANDS}}', '\n'.join(install_commands))
 

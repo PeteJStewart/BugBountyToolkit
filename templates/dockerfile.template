@@ -12,10 +12,8 @@ RUN mkdir ${HOME}/toolkit && \
     mkdir ${HOME}/wordlists
 
 # Copy and install essentials first
-COPY scripts/common.sh /opt/
 COPY scripts/essentials.sh /opt/
-RUN /bin/bash -c 'source /opt/common.sh && \
-    source /opt/essentials.sh && \
+RUN /bin/bash -c 'source /opt/essentials.sh && \
     install && \
     test || echo "Failed to install essentials"'
 
@@ -43,6 +41,10 @@ ENV PATH=/root/venv/bin:${GOPATH}/bin:${GOROOT}/bin:${PATH}
 # Clone SecLists
 RUN cd ${HOME}/wordlists && \
     git clone --depth 1 https://github.com/danielmiessler/SecLists.git
+
+# Download Assetnote Wordlists
+RUN cd ${HOME}/wordlists && \
+    wget -r --no-parent -R "index.html*" https://wordlists-cdn.assetnote.io/data/ -nH -e robots=off
 
 # Clean Go Cache
 RUN go clean -cache && \
